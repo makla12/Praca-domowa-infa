@@ -3,7 +3,8 @@
 import React from 'react';
 import { Button, FileInput, Select, Label, Table } from "flowbite-react";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
-
+import {  PDFDownloadLink } from '@react-pdf/renderer';
+import TableDocument from './TableDocument';
 
 export default function HomePage() {
     const [stage, setStage] = React.useState<number>(0);
@@ -45,6 +46,7 @@ export default function HomePage() {
         });
 
         if (newSeparator !== null) setSeparator(newSeparator);
+        else alert("Nie udało się wykryć separatora");
     }
 
     const getData = () => {
@@ -82,14 +84,14 @@ export default function HomePage() {
     return (
         <div className='w-screen h-screen absolute overflow-x-hidden'>
 
-            <div className={`w-screen h-screen flex justify-center items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 0 ? 'translate-x-0' : 'translate-x-[-100%]'}`}>
+            <div className={`w-screen min-h-screen flex justify-center items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 0 ? 'translate-x-0' : 'translate-x-[-100%]'}`}>
                 <div className='flex flex-col gap-10'>
                     <FileInput onChange={getFile} />
                     <Button onClick={() => { setStage(1); setSeparator("null") }} disabled={file === null} gradientDuoTone='purpleToBlue'> <HiOutlineArrowRight /> </Button>
                 </div>
             </div>
 
-            <div className={`w-screen h-screen flex justify-center items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 1 ? 'translate-x-0' : (stage < 1 ? 'translate-x-[100%]' : 'translate-x-[-100%]')}`}>
+            <div className={`w-screen min-h-screen flex justify-center items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 1 ? 'translate-x-0' : (stage < 1 ? 'translate-x-[100%]' : 'translate-x-[-100%]')}`}>
                 <div className='flex flex-col gap-10'>
                     <Button className='w-10' onClick={() => { setStage(0) }}> <HiOutlineArrowLeft /> </Button>
                     <Button onClick={() => { getAutoSeparator() }} gradientDuoTone='purpleToBlue'>Wykryj automatycznie</Button>
@@ -106,9 +108,9 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <div className={`w-screen h-screen flex items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 2 ? 'translate-x-0' : (stage < 2 ? 'translate-x-[100%]' : 'translate-x-[-100%]')}`}>
+            <div className={`w-screen min-h-screen py-5 flex items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 2 ? 'translate-x-0' : (stage < 2 ? 'translate-x-[100%]' : 'translate-x-[-100%]')}`}>
                 <div className='flex flex-col gap-10'>
-                    <Button className='w-10' onClick={() => { setStage(1) }}> <HiOutlineArrowLeft /> </Button>
+                    <Button className='w-10' onClick={() => { setStage(1); setData([]) }}> <HiOutlineArrowLeft /> </Button>
 
                     {(data.length === 0) ? <p>Brak danych</p> :
                         <>
@@ -134,7 +136,9 @@ export default function HomePage() {
                                 </Select>
                                 <Button onClick={sortData} disabled={sortBy === "null"} gradientDuoTone='purpleToBlue'> Posortuj </Button>
                             </div>
-                            <Button className='w-full' gradientDuoTone='greenToBlue'> Pobierz jako pdf </Button>
+                            <PDFDownloadLink document={<TableDocument data={data} />} fileName="data.pdf">
+                                    <Button className='w-full' gradientDuoTone='greenToBlue'> Pobierz jako pdf </Button>
+                            </PDFDownloadLink>
                         </>
                     }
                 </div>
