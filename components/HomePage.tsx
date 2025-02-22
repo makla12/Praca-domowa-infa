@@ -3,8 +3,6 @@
 import React from 'react';
 import { Button, FileInput, Select, Label, Table } from "flowbite-react";
 import { HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
-import PDF from './PDF';
 
 
 export default function HomePage() {
@@ -87,7 +85,7 @@ export default function HomePage() {
             <div className={`w-screen h-screen flex justify-center items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 0 ? 'translate-x-0' : 'translate-x-[-100%]'}`}>
                 <div className='flex flex-col gap-10'>
                     <FileInput onChange={getFile} />
-                    <Button onClick={() => { setStage(1) }} disabled={file === null} gradientDuoTone='purpleToBlue'> <HiOutlineArrowRight /> </Button>
+                    <Button onClick={() => { setStage(1); setSeparator("null") }} disabled={file === null} gradientDuoTone='purpleToBlue'> <HiOutlineArrowRight /> </Button>
                 </div>
             </div>
 
@@ -108,7 +106,7 @@ export default function HomePage() {
                 </div>
             </div>
 
-            <div className={`w-screen h-screen flex justify-center items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 2 ? 'translate-x-0' : (stage < 2 ? 'translate-x-[100%]' : 'translate-x-[-100%]')}`}>
+            <div className={`w-screen h-screen flex items-center flex-col gap-10 flex-shrink-0 absolute transition-transform duration-500 ${stage === 2 ? 'translate-x-0' : (stage < 2 ? 'translate-x-[100%]' : 'translate-x-[-100%]')}`}>
                 <div className='flex flex-col gap-10'>
                     <Button className='w-10' onClick={() => { setStage(1) }}> <HiOutlineArrowLeft /> </Button>
 
@@ -136,12 +134,7 @@ export default function HomePage() {
                                 </Select>
                                 <Button onClick={sortData} disabled={sortBy === "null"} gradientDuoTone='purpleToBlue'> Posortuj </Button>
                             </div>
-                            {/* <PDFDownloadLink document={<PDF data={data} />} fileName="data.pdf"> */}
-                                <Button className='w-full' gradientDuoTone='greenToBlue'> Pobierz jako pdf </Button>
-                            {/* </PDFDownloadLink> */}
-                            <PDFViewer>
-                                <PDF data={data} />
-                            </PDFViewer>
+                            <Button className='w-full' gradientDuoTone='greenToBlue'> Pobierz jako pdf </Button>
                         </>
                     }
                 </div>
