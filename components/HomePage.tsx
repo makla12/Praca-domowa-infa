@@ -28,7 +28,7 @@ export default function HomePage() {
             console.log(reader.error);
         }
 
-        reader.readAsText(file);
+        reader.readAsText(file, "utf-8");
     }
 
     const getAutoSeparator = () => {
